@@ -1,0 +1,29 @@
+STACK1 ?SEGMENT STACK ?;堆栈段定义
+? ? ? DB ? ?100H ?DUP(0)
+STACK1 ?ENDS
+
+
+DATA ? ?SEGMENT ;数据段定义
+? ? ? szHello ? DB 'HELLO,WORLD',0DH,0AH,'$'
+DATA ? ?ENDS
+
+
+CODE ? ?SEGMENT ;代码段定义
+? ? ASSUME CS:CODE,SS:STACK1,DS:DATA
+START:
+? ? MOV AX,DATA
+? ? MOV DS,AX
+
+? ? MOV CX,10H
+REPEAT:
+? ? MOV AH,09H; ? ds:dx
+? ? MOV DX,OFFSET szHello
+? ? INT 21h
+? ? LOOP ? REPEAT
+
+? ? MOV AH,4CH
+? ? INT 21H
+
+
+CODE ? ?ENDS
+END START
